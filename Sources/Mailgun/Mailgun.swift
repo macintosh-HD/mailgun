@@ -86,16 +86,3 @@ extension MailgunClient {
         postRequest(template, endpoint: "templates")
     }
 }
-
-// MARK: - Conversions
-
-extension Array where Element == MailgunMessage.FullEmail {
-    var stringArray: [String] {
-        map { entry in
-            guard let name = entry.name else {
-                return entry.email
-            }
-            return "\"\(name) <\(entry.email)>\""
-        }
-    }
-}

@@ -3,8 +3,6 @@ import Vapor
 public struct MailgunMessage: Content {
     public static var defaultContentType: HTTPMediaType = .formData
     
-    public typealias FullEmail = (email: String, name: String?)
-    
     public let from: String
     public let to: String
     public let replyTo: String?
@@ -55,10 +53,10 @@ public struct MailgunMessage: Content {
         self.inline = inline
     }
     
-    public init(from: String, to: [FullEmail], replyTo: String? = nil, cc: [FullEmail]? = nil, bcc: [FullEmail]? = nil, subject: String, text: String, html: String? = nil, attachments: [File]? = nil, inline: [File]? = nil) {
-        self.from = from
+    public init(from: FullEmail, to: [FullEmail], replyTo: FullEmail? = nil, cc: [FullEmail]? = nil, bcc: [FullEmail]? = nil, subject: String, text: String, html: String? = nil, attachments: [File]? = nil, inline: [File]? = nil) {
+        self.from = from.string
         self.to = to.stringArray.joined(separator: ",")
-        self.replyTo = replyTo
+        self.replyTo = replyTo?.string
         self.cc = cc?.stringArray.joined(separator: ",")
         self.bcc = bcc?.stringArray.joined(separator: ",")
         self.subject = subject

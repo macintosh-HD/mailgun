@@ -13,6 +13,7 @@ public struct MailgunMessage: Content {
     public let html: String?
     public let attachment: [File]?
     public let inline: [File]?
+    public let tags: [String]?
     
     private enum CodingKeys: String, CodingKey {
         case from
@@ -25,9 +26,10 @@ public struct MailgunMessage: Content {
         case html
         case attachment
         case inline
+        case tags = "o:tag"
     }
     
-    public init(from: String, to: String, replyTo: String? = nil, cc: String? = nil, bcc: String? = nil, subject: String, text: String, html: String? = nil, attachments: [File]? = nil, inline: [File]? = nil) {
+    public init(from: String, to: String, replyTo: String? = nil, cc: String? = nil, bcc: String? = nil, subject: String, text: String, html: String? = nil, attachments: [File]? = nil, inline: [File]? = nil, tags: [String]? = nil) {
         self.from = from
         self.to = to
         self.replyTo = replyTo
@@ -38,9 +40,10 @@ public struct MailgunMessage: Content {
         self.html = html
         self.attachment = attachments
         self.inline = inline
+        self.tags = tags
     }
     
-    public init(from: String, to: [String], replyTo: String? = nil, cc: [String]? = nil, bcc: [String]? = nil, subject: String, text: String, html: String? = nil, attachments: [File]? = nil, inline: [File]? = nil) {
+    public init(from: String, to: [String], replyTo: String? = nil, cc: [String]? = nil, bcc: [String]? = nil, subject: String, text: String, html: String? = nil, attachments: [File]? = nil, inline: [File]? = nil, tags: [String]? = nil) {
         self.from = from
         self.to = to.joined(separator: ",")
         self.replyTo = replyTo
@@ -51,9 +54,10 @@ public struct MailgunMessage: Content {
         self.html = html
         self.attachment = attachments
         self.inline = inline
+        self.tags = tags
     }
     
-    public init(from: FullEmail, to: [FullEmail], replyTo: FullEmail? = nil, cc: [FullEmail]? = nil, bcc: [FullEmail]? = nil, subject: String, text: String, html: String? = nil, attachments: [File]? = nil, inline: [File]? = nil) {
+    public init(from: FullEmail, to: [FullEmail], replyTo: FullEmail? = nil, cc: [FullEmail]? = nil, bcc: [FullEmail]? = nil, subject: String, text: String, html: String? = nil, attachments: [File]? = nil, inline: [File]? = nil, tags: [String]? = nil) {
         self.from = from.string
         self.to = to.stringArray.joined(separator: ",")
         self.replyTo = replyTo?.string
@@ -64,6 +68,21 @@ public struct MailgunMessage: Content {
         self.html = html
         self.attachment = attachments
         self.inline = inline
+        self.tags = tags
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(from, forKey: .from)
+        try container.encode(to, forKey: .to)
+        try container.encode(replyTo, forKey: .replyTo)
+        try container.encode(cc, forKey: .cc)
+        try container.encode(bcc, forKey: .bcc)
+        try container.encode(subject, forKey: .subject)
+        try container.encode(text, forKey: .text)
+        try container.encode(html, forKey: .html)
+        try container.encode(attachment, forKey: .attachment)
+        try container.encode(inline, forKey: .inline)
+        try container.encode(tags, forKey: .tags)
     }
 }
-

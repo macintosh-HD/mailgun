@@ -15,6 +15,7 @@ public struct MailgunTemplateMessage: Content {
     public let templateText: Bool?
     public let attachment: [File]?
     public let inline: [File]?
+    public let tags: [String]?
     
     private enum CodingKeys: String, CodingKey {
         case from
@@ -26,6 +27,7 @@ public struct MailgunTemplateMessage: Content {
         case template
         case attachment
         case inline
+        case tags = "o:tag"
         case templateData = "h:X-Mailgun-Variables"
         case templateVersion = "t:version"
         case templateText = "t:text"
@@ -50,9 +52,10 @@ public struct MailgunTemplateMessage: Content {
         try container.encode(text, forKey: .templateText)
         try container.encode(attachment, forKey: .attachment)
         try container.encode(inline, forKey: .inline)
+        try container.encode(tags, forKey: .tags)
     }
     
-    public init(from: String, to: String, replyTo: String? = nil, cc: String? = nil, bcc: String? = nil, subject: String, template: String, templateData: [String:String]? = nil, templateVersion: String? = nil, templateText: Bool? = nil, attachments: [File]? = nil, inline: [File]? = nil) {
+    public init(from: String, to: String, replyTo: String? = nil, cc: String? = nil, bcc: String? = nil, subject: String, template: String, templateData: [String:String]? = nil, templateVersion: String? = nil, templateText: Bool? = nil, attachments: [File]? = nil, inline: [File]? = nil, tags: [String]? = nil) {
         self.from = from
         self.to = to
         self.replyTo = replyTo
@@ -65,9 +68,10 @@ public struct MailgunTemplateMessage: Content {
         self.templateText = templateText
         self.attachment = attachments
         self.inline = inline
+        self.tags = tags
     }
     
-    public init(from: String, to: [String], replyTo: String? = nil, cc: [String]? = nil, bcc: [String]? = nil, subject: String, template: String, templateData: [String:String]? = nil,  templateVersion: String? = nil, templateText: Bool? = nil, attachments: [File]? = nil, inline: [File]? = nil) {
+    public init(from: String, to: [String], replyTo: String? = nil, cc: [String]? = nil, bcc: [String]? = nil, subject: String, template: String, templateData: [String:String]? = nil,  templateVersion: String? = nil, templateText: Bool? = nil, attachments: [File]? = nil, inline: [File]? = nil, tags: [String]? = nil) {
         self.from = from
         self.to = to.joined(separator: ",")
         self.replyTo = replyTo
@@ -80,9 +84,10 @@ public struct MailgunTemplateMessage: Content {
         self.templateText = templateText
         self.attachment = attachments
         self.inline = inline
+        self.tags = tags
     }
     
-    public init(from: FullEmail, to: [FullEmail], replyTo: FullEmail? = nil, cc: [FullEmail]? = nil, bcc: [FullEmail]? = nil, subject: String, template: String, templateData: [String:String]? = nil, templateVersion: String? = nil, templateText: Bool? = nil, attachments: [File]? = nil, inline: [File]? = nil) {
+    public init(from: FullEmail, to: [FullEmail], replyTo: FullEmail? = nil, cc: [FullEmail]? = nil, bcc: [FullEmail]? = nil, subject: String, template: String, templateData: [String:String]? = nil, templateVersion: String? = nil, templateText: Bool? = nil, attachments: [File]? = nil, inline: [File]? = nil, tags: [String]? = nil) {
         self.from = from.string
         self.to = to.stringArray.joined(separator: ",")
         self.replyTo = replyTo?.string
@@ -95,5 +100,6 @@ public struct MailgunTemplateMessage: Content {
         self.templateText = templateText
         self.attachment = attachments
         self.inline = inline
+        self.tags = tags
     }
 }

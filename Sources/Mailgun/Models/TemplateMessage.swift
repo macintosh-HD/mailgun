@@ -71,6 +71,22 @@ public struct MailgunTemplateMessage: Content {
         self.tags = tags
     }
     
+    public init(from: FullEmail, to: FullEmail, replyTo: FullEmail? = nil, cc: FullEmail? = nil, bcc: FullEmail? = nil, subject: String, template: String, templateData: [String:String]? = nil, templateVersion: String? = nil, templateText: Bool? = nil, attachments: [File]? = nil, inline: [File]? = nil, tags: [String]? = nil) {
+        self.from = from.string
+        self.to = to.string
+        self.replyTo = replyTo?.string
+        self.cc = cc?.string
+        self.bcc = bcc?.string
+        self.subject = subject
+        self.template = template
+        self.templateData = templateData
+        self.templateVersion = templateVersion
+        self.templateText = templateText
+        self.attachment = attachments
+        self.inline = inline
+        self.tags = tags
+    }
+    
     public init(from: String, to: [String], replyTo: String? = nil, cc: [String]? = nil, bcc: [String]? = nil, subject: String, template: String, templateData: [String:String]? = nil,  templateVersion: String? = nil, templateText: Bool? = nil, attachments: [File]? = nil, inline: [File]? = nil, tags: [String]? = nil) {
         self.from = from
         self.to = to.joined(separator: ",")

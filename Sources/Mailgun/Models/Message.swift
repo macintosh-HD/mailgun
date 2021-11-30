@@ -43,6 +43,20 @@ public struct MailgunMessage: Content {
         self.tags = tags
     }
     
+    public init(from: FullEmail, to: FullEmail, replyTo: FullEmail? = nil, cc: FullEmail? = nil, bcc: FullEmail? = nil, subject: String, text: String, html: String? = nil, attachments: [File]? = nil, inline: [File]? = nil, tags: [String]? = nil) {
+        self.from = from.string
+        self.to = to.string
+        self.replyTo = replyTo?.string
+        self.cc = cc?.string
+        self.bcc = bcc?.string
+        self.subject = subject
+        self.text = text
+        self.html = html
+        self.attachment = attachments
+        self.inline = inline
+        self.tags = tags
+    }
+    
     public init(from: String, to: [String], replyTo: String? = nil, cc: [String]? = nil, bcc: [String]? = nil, subject: String, text: String, html: String? = nil, attachments: [File]? = nil, inline: [File]? = nil, tags: [String]? = nil) {
         self.from = from
         self.to = to.joined(separator: ",")

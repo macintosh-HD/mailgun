@@ -22,7 +22,7 @@ extension FullEmail {
         guard let name = name else {
             return email
         }
-        return "\"\(name) <\(email)>\""
+        return "\(name) <\(email)>"
     }
 }
 
